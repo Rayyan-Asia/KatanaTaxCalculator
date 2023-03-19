@@ -46,7 +46,7 @@ namespace Price_Calculator_Kata
 
         public void DisplayOrderOfCalculationsMessage()
         {
-            Console.WriteLine("Please enter 1 for the tax to be calculated first, or 2 for discount to be calculated first");
+            Console.WriteLine("Please enter 1 for the discount to be calculated first, or 2 for tax to be calculated first");
         }
 
         public void DisplayAddExpensesMessage()

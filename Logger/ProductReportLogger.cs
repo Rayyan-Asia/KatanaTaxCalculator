@@ -1,30 +1,32 @@
-﻿namespace Price_Calculator_Kata
+﻿using System.Net;
+
+namespace Price_Calculator_Kata
 {
     public class ProductReportLogger : IProductReportLogger
     {
-        public void PrintCapDeduction(double before, double after, string currency)
+        public void PrintCapDeduction(double before, double after, string currency, int precision)
         {
-            Console.WriteLine($"Discount Maxed Out at a {Math.Round(before - after, 2)} {currency} deduction");
+            Console.WriteLine($"Discount Maxed Out at a {Math.Round(before - after, precision)} {currency} deduction");
         }
 
-        public void PrintDiscount(double before, double after, decimal discountRate, string currency)
+        public void PrintDiscount(double before, double after, decimal discountRate, string currency, int precision)
         {
-            var deducedAmount = Math.Round((before - after), 2);
+            var deducedAmount = Math.Round((before - after), precision);
             var displayDiscountRate = Math.Round((discountRate) * 100);
             Console.WriteLine($"Price:{after} {currency} after {displayDiscountRate}% discount.\n-{deducedAmount} {currency} deduced.\n");
         }
 
-        public void PrintExpense(string description, double amount, string currency)
+        public void PrintExpense(string description, double amount, string currency, int precision)
         {
-            Console.WriteLine($"Description: {description}\nCost: {amount} {currency}");
+            Console.WriteLine($"Description: {description}\nCost: {Math.Round(amount,precision)} {currency}");
         }
 
-        public void PrintFinalPrice(double amount, string currency)
+        public void PrintFinalPrice(double amount, string currency, int precision)
         {
-            Console.WriteLine($"Total: {amount} {currency}\n\n");
+            Console.WriteLine($"Total: {Math.Round(amount,precision)} {currency}\n\n");
         }
 
-        public void PrintMultiplicativeDiscount(double before, double after, decimal discount1, decimal discount2, string currency)
+        public void PrintMultiplicativeDiscount(double before, double after, decimal discount1, decimal discount2, string currency, int precision)
         {
             decimal displayDiscountRate1 = 0;
             double deducedPrice = 0;
@@ -32,8 +34,8 @@
             if (discount1 != 0)
             {
                 displayDiscountRate1 = Math.Round((discount1) * 100);
-                deducedPrice = Math.Round(before - (before * ((double)discount1)), 2);
-                deduced = Math.Round((before * ((double)discount1)), 2);
+                deducedPrice = Math.Round(before - (before * ((double)discount1)), precision);
+                deduced = Math.Round((before * ((double)discount1)), precision );
             }
             var displayDiscountRate2 = Math.Round((discount2) * 100);
             Console.WriteLine($"Price Before: {before} {currency}");
@@ -43,18 +45,18 @@
                 Console.WriteLine($"Amount deduced {deduced} {currency}");
             }
             Console.WriteLine($"Applied {displayDiscountRate2}% discount.");
-            deduced = Math.Round((deducedPrice * ((double)discount2)), 2);
+            deduced = Math.Round((deducedPrice * ((double)discount2)), precision);
             Console.WriteLine($"Amount Deduced {deduced} {currency}");
             Console.WriteLine($"Price After Discounts: {after} {currency}");
         }
 
-        public void PrintProduct(IProduct product)
+        public void PrintProduct(IProduct product, int precision)
         {
-            Console.Write($"{product.Name} price reported as {product.Price} {product.Currency}\n");
+            Console.Write($"{product.Name} price reported as {Math.Round(product.Price,precision)} {product.Currency}\n");
         }
-        public void PrintTax(double before, double after, decimal taxRate, string currency)
+        public void PrintTax(double before, double after, decimal taxRate, string currency, int precision)
         {
-            var addedAmount = Math.Round((after - before), 2);
+            var addedAmount = Math.Round((after - before), precision);
             var displayTaxRate = Math.Round(taxRate * 100);
             Console.WriteLine($"Price: {after} {currency} after {displayTaxRate}% tax  \n+{addedAmount} {currency} added\n");
         }
