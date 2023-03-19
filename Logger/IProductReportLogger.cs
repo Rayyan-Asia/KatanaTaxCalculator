@@ -4,13 +4,13 @@
     {
         void PrintProduct(IProduct product);
         
-        void PrintDiscount(double before, double after, decimal discountRate);
-        void PrintMultiplicativeDiscount(double before, double after, decimal discount1,decimal discount2);
-        void PrintTax(double before, double after, decimal taxRate);
-        void PrintExpense(string description, double amount);
+        void PrintDiscount(double before, double after, decimal discountRate, string currency);
+        void PrintMultiplicativeDiscount(double before, double after, decimal discount1,decimal discount2, string currency);
+        void PrintTax(double before, double after, decimal taxRate, string currency);
+        void PrintExpense(string description, double amount, string currency);
 
-        void PrintFinalPrice(double amount);
+        void PrintFinalPrice(double amount, string currency);
 
-        void PrintCapDeduction(double before, double after);
+        void PrintCapDeduction(double before, double after, string currency);
     }
 }

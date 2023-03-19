@@ -7,6 +7,7 @@
         public double Price { get; set; }
         public decimal Discount { get; set; }
         public double DiscountCap { get; set; }
+        public string Currency { get; set; }
         public List<IExpense> Expenses { get; set; }
     }
 }

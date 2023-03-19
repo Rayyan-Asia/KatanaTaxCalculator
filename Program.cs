@@ -310,10 +310,10 @@ namespace Price_Calculator_Kata
                     {
                         priceAfterDiscount = priceAfterTax - product.DiscountCap;
                         logger.PrintProduct(product);
-                        logger.PrintTax(product.Price, priceAfterTax, taxRate);
-                        logger.PrintCapDeduction(priceAfterTax, priceAfterDiscount);
+                        logger.PrintTax(product.Price, priceAfterTax, taxRate, product.Currency);
+                        logger.PrintCapDeduction(priceAfterTax, priceAfterDiscount,product.Currency);
                         double totalExpenses = HandleExpenses(priceCalculator, logger, product);
-                        logger.PrintFinalPrice(priceAfterDiscount + totalExpenses);
+                        logger.PrintFinalPrice(priceAfterDiscount + totalExpenses,product.Currency);
                     }
                     else
                     {
@@ -330,17 +330,17 @@ namespace Price_Calculator_Kata
         private static void ReportDiscountAfter(decimal taxRate, decimal discountRate, IProductPriceCalculator priceCalculator, IProductReportLogger logger, IProduct product, double priceAfterTax, double priceAfterDiscount, bool multiplicative)
         {
             logger.PrintProduct(product);
-            logger.PrintTax(product.Price, priceAfterTax, taxRate);
+            logger.PrintTax(product.Price, priceAfterTax, taxRate, product.Currency);
             if (!multiplicative)
             {
-                logger.PrintDiscount(priceAfterTax, priceAfterDiscount, discountRate + product.Discount);
+                logger.PrintDiscount(priceAfterTax, priceAfterDiscount, discountRate + product.Discount, product.Currency);
             }
             else
             {
-                logger.PrintMultiplicativeDiscount(priceAfterTax, priceAfterDiscount, product.Discount, discountRate);
+                logger.PrintMultiplicativeDiscount(priceAfterTax, priceAfterDiscount, product.Discount, discountRate,product.Currency);
             }
             double totalExpenses = HandleExpenses(priceCalculator, logger, product);
-            logger.PrintFinalPrice(priceAfterDiscount + totalExpenses);
+            logger.PrintFinalPrice(priceAfterDiscount + totalExpenses, product.Currency);
         }
 
         private static void ReportDiscountFirst(decimal taxRate, decimal discountRate, IProductPriceCalculator priceCalculator, IProductReportLogger logger, IProduct product)
@@ -352,11 +352,11 @@ namespace Price_Calculator_Kata
                 var priceAfterTax = priceCalculator.CalculatePriceWithGivenTaxRateAfterDiscount(priceAfterDiscount, taxRate);
                 var priceAfterSecondDiscount = priceCalculator.CalculatePriceWithGivenDiscountRateAfterTaxWithoutUPC(product, priceAfterTax, discountRate);
                 logger.PrintProduct(product);
-                if (product.Discount != 0) { logger.PrintDiscount(product.Price, priceAfterDiscount, product.Discount); }
-                logger.PrintTax(priceAfterDiscount, priceAfterTax, taxRate);
-                logger.PrintDiscount(priceAfterTax, priceAfterSecondDiscount, discountRate);
+                if (product.Discount != 0) { logger.PrintDiscount(product.Price, priceAfterDiscount, product.Discount, product.Currency); }
+                logger.PrintTax(priceAfterDiscount, priceAfterTax, taxRate, product.Currency);
+                logger.PrintDiscount(priceAfterTax, priceAfterSecondDiscount, discountRate, product.Currency);
                 double totalExpenses = HandleExpenses(priceCalculator, logger, product);
-                logger.PrintFinalPrice(priceAfterSecondDiscount + totalExpenses);
+                logger.PrintFinalPrice(priceAfterSecondDiscount + totalExpenses, product.Currency);
             }
             else
             {
@@ -366,10 +366,10 @@ namespace Price_Calculator_Kata
                     priceAfterDiscount = product.Price - product.DiscountCap;
                     var priceAfterTax = priceCalculator.CalculatePriceWithGivenTaxRateAfterDiscount(priceAfterDiscount, taxRate);
                     logger.PrintProduct(product);
-                    logger.PrintCapDeduction(product.Price, priceAfterDiscount);
-                    logger.PrintTax(priceAfterDiscount, priceAfterTax, taxRate);
+                    logger.PrintCapDeduction(product.Price, priceAfterDiscount, product.Currency);
+                    logger.PrintTax(priceAfterDiscount, priceAfterTax, taxRate, product.Currency);
                     double totalExpenses = HandleExpenses(priceCalculator, logger, product);
-                    logger.PrintFinalPrice(priceAfterTax + totalExpenses);
+                    logger.PrintFinalPrice(priceAfterTax + totalExpenses, product.Currency);
                 }
                 else
                 {
@@ -379,20 +379,20 @@ namespace Price_Calculator_Kata
                     {
                         priceAfterSecondDiscount = priceAfterTax - cap;
                         logger.PrintProduct(product);
-                        logger.PrintDiscount(product.Price, priceAfterDiscount, discountRate);
-                        logger.PrintTax(priceAfterDiscount, priceAfterTax, taxRate);
-                        logger.PrintCapDeduction(priceAfterTax, priceAfterSecondDiscount);
+                        logger.PrintDiscount(product.Price, priceAfterDiscount, discountRate, product.Currency);
+                        logger.PrintTax(priceAfterDiscount, priceAfterTax, taxRate, product.Currency);
+                        logger.PrintCapDeduction(priceAfterTax, priceAfterSecondDiscount, product.Currency);
                         double totalExpenses = HandleExpenses(priceCalculator, logger, product);
-                        logger.PrintFinalPrice(priceAfterSecondDiscount + totalExpenses);
+                        logger.PrintFinalPrice(priceAfterSecondDiscount + totalExpenses, product.Currency);
                     }
                     else
                     {
                         logger.PrintProduct(product);
-                        if (product.Discount != 0) { logger.PrintDiscount(product.Price, priceAfterDiscount, product.Discount); }
-                        logger.PrintTax(priceAfterDiscount, priceAfterTax, taxRate);
-                        logger.PrintDiscount(priceAfterTax, priceAfterSecondDiscount, discountRate);
+                        if (product.Discount != 0) { logger.PrintDiscount(product.Price, priceAfterDiscount, product.Discount, product.Currency); }
+                        logger.PrintTax(priceAfterDiscount, priceAfterTax, taxRate, product.Currency);
+                        logger.PrintDiscount(priceAfterTax, priceAfterSecondDiscount, discountRate, product.Currency);
                         double totalExpenses = HandleExpenses(priceCalculator, logger, product);
-                        logger.PrintFinalPrice(priceAfterSecondDiscount + totalExpenses);
+                        logger.PrintFinalPrice(priceAfterSecondDiscount + totalExpenses, product.Currency);
                     }
                 }
             }
@@ -404,7 +404,7 @@ namespace Price_Calculator_Kata
             foreach (Expense expense in product.Expenses)
             {
                 var cost = priceCalculator.CalculateExpense(expense, product);
-                logger.PrintExpense(expense.Description, cost);
+                logger.PrintExpense(expense.Description, cost, product.Currency);
                 totalExpenses += cost;
             }
 
