@@ -16,7 +16,7 @@
         void DisplayExpenseAmountMessage();
         void DisplayExpenseDescriptionMessage();
 
-        void DisplayIsExpensePercentageMessage();
+        void DisplayIsPricePercentageMessage();
         void DisplayExpensePercentageMessage();
 
         void DisplayWantsToExitMessage();
@@ -24,7 +24,12 @@
 
         void DisplaySumOrMultiplicativeDiscountMessage();
 
-        void DisplayDemoundsDiscountCap();
+        void DisplayDemandsDiscountCap();
+
+        void DisplayDemandUpcForDiscountCap();
+
+        void DisplayDemandDiscountCapPercentage();
+        void DisplayDemandDiscountCapAmount();
 
     }
 }

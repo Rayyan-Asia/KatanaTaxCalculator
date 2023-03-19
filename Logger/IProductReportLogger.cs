@@ -10,5 +10,7 @@
         void PrintExpense(string description, double amount);
 
         void PrintFinalPrice(double amount);
+
+        void PrintCapDeduction(double before, double after);
     }
 }

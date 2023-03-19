@@ -10,6 +10,11 @@ namespace Price_Calculator_Kata
 {
     public class ProductReportLogger : IProductReportLogger
     {
+        public void PrintCapDeduction(double before, double after)
+        {
+            Console.WriteLine($"Discount Maxed Out at a {Math.Round(before - after,2)} deduction");
+        }
+
         public void PrintDiscount(double before, double after, decimal discountRate)
         {
             var deducedAmount = Math.Round((before - after), 2);

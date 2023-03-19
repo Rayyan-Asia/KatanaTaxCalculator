@@ -64,7 +64,7 @@ namespace Price_Calculator_Kata
             Console.WriteLine("What is this Expense? ex: packaging, shipping, etc.");
         }
 
-        public void DisplayIsExpensePercentageMessage()
+        public void DisplayIsPricePercentageMessage()
         {
             Console.WriteLine("Is this a percentage of the product price, enter 'y' for yes or any other key for no.");
         }
@@ -89,9 +89,24 @@ namespace Price_Calculator_Kata
             Console.WriteLine("Would you like the discounts to be simple sum\nEnter 'y' for yes or any other key for no for multiplicative discounts.");
         }
 
-        public void DisplayDemoundsDiscountCap()
+        public void DisplayDemandsDiscountCap()
         {
-            Console.WriteLine("Please enter the UPC for a Product you would like to hava a Discount Cap on or enter -1 to exit loop.");
+            Console.WriteLine("Would you like to enter discount caps?\nenter 'y' for yes and anything else as no");
+        }
+
+        public void DisplayDemandUpcForDiscountCap()
+        {
+            Console.WriteLine("Please enter the UPC for a Product you would like to hava a discount cap on or enter -1 to exit loop.");
+        }
+
+        public void DisplayDemandDiscountCapPercentage()
+        {
+            Console.WriteLine("Please enter a real number from 0 to 100 for the added discount cap rate");
+        }
+
+        public void DisplayDemandDiscountCapAmount()
+        {
+            Console.WriteLine("Please enter the maximum discount amount");
         }
     }
 }
