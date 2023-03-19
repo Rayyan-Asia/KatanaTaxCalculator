@@ -108,5 +108,10 @@ namespace Price_Calculator_Kata
         {
             Console.WriteLine("Please enter the maximum discount amount");
         }
+
+        public void DisplayDemandPrecisionMeasurement()
+        {
+            Console.WriteLine("Please enter the precision you desire");
+        }
     }
 }

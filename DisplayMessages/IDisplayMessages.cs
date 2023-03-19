@@ -30,6 +30,6 @@
 
         void DisplayDemandDiscountCapPercentage();
         void DisplayDemandDiscountCapAmount();
-
+        void DisplayDemandPrecisionMeasurement();
     }
 }

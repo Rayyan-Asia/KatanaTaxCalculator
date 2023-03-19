@@ -24,6 +24,8 @@ namespace Price_Calculator_Kata
             decimal taxRate = FilterInput(messenger);
             messenger.DisplayDiscountMessage();
             decimal discountRate = FilterInput(messenger);
+            messenger.DisplayDemandPrecisionMeasurement();
+            int precision = ParseInt(messenger,Console.ReadLine().Replace(" ","").ToLower());
             messenger.DisplayCustomDiscountMessage();
             var repository = Factory.CreateProductRepository();
             if (DemandsCustomDiscount())
@@ -33,27 +35,27 @@ namespace Price_Calculator_Kata
             messenger.DisplayDemandsDiscountCap();
             if (IsYes())
             {
-                GetCustomDiscountCap(repository, messenger);
+                GetCustomDiscountCap(repository, messenger,precision);
             }
             messenger.DisplayAddExpensesMessage();
             if (IsYes())
             {
-                GetCustomExpenses(repository, messenger);
+                GetCustomExpenses(repository, messenger,precision);
             }
             messenger.DisplayOrderOfCalculationsMessage();
             if (DemandsDiscountBeforeTax(messenger))
             {
-                IterateAndReport(repository, taxRate, discountRate, true, messenger);
+                IterateAndReport(repository, taxRate, discountRate, true, messenger,precision);
             }
             else
             {
-                IterateAndReport(repository, taxRate, discountRate, false, messenger);
+                IterateAndReport(repository, taxRate, discountRate, false, messenger, precision);
             }
 
             messenger.DisplayExitMessage();
         }
 
-        private static void GetCustomDiscountCap(IProductRepository repository, IDisplayMessages messenger)
+        private static void GetCustomDiscountCap(IProductRepository repository, IDisplayMessages messenger, int precision)
         {
             var input = "";
             while (input != "-1")
@@ -70,14 +72,14 @@ namespace Price_Calculator_Kata
                     }
                     else
                     {
-                        GetDiscountCap(product, messenger);
+                        GetDiscountCap(product, messenger, precision);
                     }
                 }
 
             }
         }
 
-        private static void GetDiscountCap(IProduct product, IDisplayMessages messenger)
+        private static void GetDiscountCap(IProduct product, IDisplayMessages messenger, int precision)
         {
             messenger.DisplayIsPricePercentageMessage();
             if (IsYes())
@@ -85,20 +87,20 @@ namespace Price_Calculator_Kata
                 messenger.DisplayDemandDiscountCapPercentage();
                 var input = Console.ReadLine().Replace(" ", "").ToLower();
                 var percentage = ParsePercentage(input);
-                var fraction = Math.Round((percentage / 100.0) * product.Price, 2);
+                var fraction = Math.Round((percentage / 100.0) * product.Price, precision);
                 product.DiscountCap = fraction;
             }
             else
             {
                 messenger.DisplayDemandDiscountCapAmount();
                 var input = Console.ReadLine().Replace(" ", "").ToLower();
-                var amount = ParseDouble(messenger, input);
-                amount = Math.Round(amount, 2);
+                var amount = ParseDouble(messenger, input, precision);
+                amount = Math.Round(amount, precision);
                 product.DiscountCap = amount;
             }
         }
 
-        private static void GetCustomExpenses(IProductRepository repository, IDisplayMessages messenger)
+        private static void GetCustomExpenses(IProductRepository repository, IDisplayMessages messenger, int precision)
         {
             var input = "";
             while (input != "-1")
@@ -115,14 +117,14 @@ namespace Price_Calculator_Kata
                     }
                     else
                     {
-                        GetExpenseValueAndDescription(product, messenger);
+                        GetExpenseValueAndDescription(product, messenger, precision);
                     }
                 }
 
             }
         }
 
-        private static void GetExpenseValueAndDescription(IProduct product, IDisplayMessages messenger)
+        private static void GetExpenseValueAndDescription(IProduct product, IDisplayMessages messenger, int precision)
         {
             var input = "";
             while (input != "-1")
@@ -146,7 +148,7 @@ namespace Price_Calculator_Kata
                 {
                     messenger.DisplayExpenseAmountMessage();
                     input = Console.ReadLine().ToLower();
-                    var value = ParseDouble(messenger, input);
+                    var value = ParseDouble(messenger, input,precision);
                     messenger.DisplayExpenseDescriptionMessage();
                     var description = Console.ReadLine();
                     var expense = Factory.CreateExpense();
@@ -224,10 +226,10 @@ namespace Price_Calculator_Kata
             return upc;
         }
 
-        private static double ParseDouble(IDisplayMessages messenger, string input)
+        private static double ParseDouble(IDisplayMessages messenger, string input, int precision)
         {
             var amount = 0.0;
-            try { amount = Math.Round(double.Parse(input), 2); }
+            try { amount = Math.Round(double.Parse(input),precision); }
             catch (Exception ex)
             {
                 messenger.DisplayErrorMessage(input);
@@ -279,7 +281,7 @@ namespace Price_Calculator_Kata
 
 
 
-        private static void IterateAndReport(IProductRepository repository, decimal taxRate, decimal discountRate, bool discountfirst, IDisplayMessages messenger)
+        private static void IterateAndReport(IProductRepository repository, decimal taxRate, decimal discountRate, bool discountfirst, IDisplayMessages messenger, int precision)
         {
             var priceCalculator = Factory.CreateTaxCalculator();
             var logger = Factory.CreateLogger();
@@ -288,22 +290,22 @@ namespace Price_Calculator_Kata
             {
                 if (discountfirst)
                 {
-                    ReportDiscountFirst(taxRate, discountRate, priceCalculator, logger, product);
+                    ReportDiscountFirst(taxRate, discountRate, priceCalculator, logger, product, precision);
                 }
                 else
                 {
                     messenger.DisplaySumOrMultiplicativeDiscountMessage();
                     var input = Console.ReadLine().Replace(" ", "").ToLower();
-                    var priceAfterTax = priceCalculator.CalculatePriceWithGivenTaxRate(product, taxRate);
+                    var priceAfterTax = priceCalculator.CalculatePriceWithGivenTaxRate(product, taxRate, precision);
                     var priceAfterDiscount = 0.0;
                     bool multiplicative = false;
                     if (input == "y")
                     {
-                        priceAfterDiscount = priceCalculator.CalculatePriceWithGivenDiscountRateAfterTax(product, priceAfterTax, discountRate);
+                        priceAfterDiscount = priceCalculator.CalculatePriceWithGivenDiscountRateAfterTax(product, priceAfterTax, discountRate,precision);
                     }
                     else
                     {
-                        priceAfterDiscount = priceCalculator.CalculatePriceWithMultiplicativeDiscount(product, priceAfterTax, discountRate);
+                        priceAfterDiscount = priceCalculator.CalculatePriceWithMultiplicativeDiscount(product, priceAfterTax, discountRate,precision);
                         multiplicative = true;
                     }
                     if (product.DiscountCap != 0 && priceAfterTax - priceAfterDiscount > product.DiscountCap)
@@ -312,12 +314,12 @@ namespace Price_Calculator_Kata
                         logger.PrintProduct(product);
                         logger.PrintTax(product.Price, priceAfterTax, taxRate, product.Currency);
                         logger.PrintCapDeduction(priceAfterTax, priceAfterDiscount,product.Currency);
-                        double totalExpenses = HandleExpenses(priceCalculator, logger, product);
+                        double totalExpenses = HandleExpenses(priceCalculator, logger, product, precision);
                         logger.PrintFinalPrice(priceAfterDiscount + totalExpenses,product.Currency);
                     }
                     else
                     {
-                        ReportDiscountAfter(taxRate, discountRate, priceCalculator, logger, product, priceAfterTax, priceAfterDiscount, multiplicative);
+                        ReportDiscountAfter(taxRate, discountRate, priceCalculator, logger, product, priceAfterTax, priceAfterDiscount, multiplicative, precision);
                     }
 
 
@@ -327,7 +329,7 @@ namespace Price_Calculator_Kata
 
         }
 
-        private static void ReportDiscountAfter(decimal taxRate, decimal discountRate, IProductPriceCalculator priceCalculator, IProductReportLogger logger, IProduct product, double priceAfterTax, double priceAfterDiscount, bool multiplicative)
+        private static void ReportDiscountAfter(decimal taxRate, decimal discountRate, IProductPriceCalculator priceCalculator, IProductReportLogger logger, IProduct product, double priceAfterTax, double priceAfterDiscount, bool multiplicative, int precision)
         {
             logger.PrintProduct(product);
             logger.PrintTax(product.Price, priceAfterTax, taxRate, product.Currency);
@@ -339,23 +341,23 @@ namespace Price_Calculator_Kata
             {
                 logger.PrintMultiplicativeDiscount(priceAfterTax, priceAfterDiscount, product.Discount, discountRate,product.Currency);
             }
-            double totalExpenses = HandleExpenses(priceCalculator, logger, product);
+            double totalExpenses = HandleExpenses(priceCalculator, logger, product, precision);
             logger.PrintFinalPrice(priceAfterDiscount + totalExpenses, product.Currency);
         }
 
-        private static void ReportDiscountFirst(decimal taxRate, decimal discountRate, IProductPriceCalculator priceCalculator, IProductReportLogger logger, IProduct product)
+        private static void ReportDiscountFirst(decimal taxRate, decimal discountRate, IProductPriceCalculator priceCalculator, IProductReportLogger logger, IProduct product, int precision)
         {
-            var priceAfterDiscount = priceCalculator.CalculatePriceWithGivenDiscountRate(product);
+            var priceAfterDiscount = priceCalculator.CalculatePriceWithGivenDiscountRate(product,precision);
             var cap = product.DiscountCap;
             if (cap == 0)
             {
-                var priceAfterTax = priceCalculator.CalculatePriceWithGivenTaxRateAfterDiscount(priceAfterDiscount, taxRate);
-                var priceAfterSecondDiscount = priceCalculator.CalculatePriceWithGivenDiscountRateAfterTaxWithoutUPC(product, priceAfterTax, discountRate);
+                var priceAfterTax = priceCalculator.CalculatePriceWithGivenTaxRateAfterDiscount(priceAfterDiscount, taxRate,precision);
+                var priceAfterSecondDiscount = priceCalculator.CalculatePriceWithGivenDiscountRateAfterTaxWithoutUPC(product, priceAfterTax, discountRate,precision);
                 logger.PrintProduct(product);
                 if (product.Discount != 0) { logger.PrintDiscount(product.Price, priceAfterDiscount, product.Discount, product.Currency); }
                 logger.PrintTax(priceAfterDiscount, priceAfterTax, taxRate, product.Currency);
                 logger.PrintDiscount(priceAfterTax, priceAfterSecondDiscount, discountRate, product.Currency);
-                double totalExpenses = HandleExpenses(priceCalculator, logger, product);
+                double totalExpenses = HandleExpenses(priceCalculator, logger, product, precision);
                 logger.PrintFinalPrice(priceAfterSecondDiscount + totalExpenses, product.Currency);
             }
             else
@@ -364,17 +366,17 @@ namespace Price_Calculator_Kata
                 if (cap < 0)
                 {
                     priceAfterDiscount = product.Price - product.DiscountCap;
-                    var priceAfterTax = priceCalculator.CalculatePriceWithGivenTaxRateAfterDiscount(priceAfterDiscount, taxRate);
+                    var priceAfterTax = priceCalculator.CalculatePriceWithGivenTaxRateAfterDiscount(priceAfterDiscount, taxRate, precision);
                     logger.PrintProduct(product);
                     logger.PrintCapDeduction(product.Price, priceAfterDiscount, product.Currency);
                     logger.PrintTax(priceAfterDiscount, priceAfterTax, taxRate, product.Currency);
-                    double totalExpenses = HandleExpenses(priceCalculator, logger, product);
+                    double totalExpenses = HandleExpenses(priceCalculator, logger, product, precision);
                     logger.PrintFinalPrice(priceAfterTax + totalExpenses, product.Currency);
                 }
                 else
                 {
-                    var priceAfterTax = priceCalculator.CalculatePriceWithGivenTaxRateAfterDiscount(priceAfterDiscount, taxRate);
-                    var priceAfterSecondDiscount = priceCalculator.CalculatePriceWithGivenDiscountRateAfterTaxWithoutUPC(product, priceAfterTax, discountRate);
+                    var priceAfterTax = priceCalculator.CalculatePriceWithGivenTaxRateAfterDiscount(priceAfterDiscount, taxRate,precision);
+                    var priceAfterSecondDiscount = priceCalculator.CalculatePriceWithGivenDiscountRateAfterTaxWithoutUPC(product, priceAfterTax, discountRate,precision);
                     if (cap < priceAfterTax - priceAfterSecondDiscount)
                     {
                         priceAfterSecondDiscount = priceAfterTax - cap;
@@ -382,7 +384,7 @@ namespace Price_Calculator_Kata
                         logger.PrintDiscount(product.Price, priceAfterDiscount, discountRate, product.Currency);
                         logger.PrintTax(priceAfterDiscount, priceAfterTax, taxRate, product.Currency);
                         logger.PrintCapDeduction(priceAfterTax, priceAfterSecondDiscount, product.Currency);
-                        double totalExpenses = HandleExpenses(priceCalculator, logger, product);
+                        double totalExpenses = HandleExpenses(priceCalculator, logger, product,precision);
                         logger.PrintFinalPrice(priceAfterSecondDiscount + totalExpenses, product.Currency);
                     }
                     else
@@ -391,19 +393,19 @@ namespace Price_Calculator_Kata
                         if (product.Discount != 0) { logger.PrintDiscount(product.Price, priceAfterDiscount, product.Discount, product.Currency); }
                         logger.PrintTax(priceAfterDiscount, priceAfterTax, taxRate, product.Currency);
                         logger.PrintDiscount(priceAfterTax, priceAfterSecondDiscount, discountRate, product.Currency);
-                        double totalExpenses = HandleExpenses(priceCalculator, logger, product);
+                        double totalExpenses = HandleExpenses(priceCalculator, logger, product,precision);
                         logger.PrintFinalPrice(priceAfterSecondDiscount + totalExpenses, product.Currency);
                     }
                 }
             }
         }
 
-        private static double HandleExpenses(IProductPriceCalculator priceCalculator, IProductReportLogger logger, IProduct product)
+        private static double HandleExpenses(IProductPriceCalculator priceCalculator, IProductReportLogger logger, IProduct product, int precision)
         {
             var totalExpenses = 0.0;
             foreach (Expense expense in product.Expenses)
             {
-                var cost = priceCalculator.CalculateExpense(expense, product);
+                var cost = priceCalculator.CalculateExpense(expense, product, precision);
                 logger.PrintExpense(expense.Description, cost, product.Currency);
                 totalExpenses += cost;
             }
