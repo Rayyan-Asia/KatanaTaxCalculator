@@ -1,0 +1,15 @@
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\bin\Debug\net6.0\Katana Tax Calculator.exe
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\bin\Debug\net6.0\Katana Tax Calculator.deps.json
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\bin\Debug\net6.0\Katana Tax Calculator.runtimeconfig.json
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\bin\Debug\net6.0\Katana Tax Calculator.dll
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\bin\Debug\net6.0\Katana Tax Calculator.pdb
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\obj\Debug\net6.0\Katana Tax Calculator.csproj.AssemblyReference.cache
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\obj\Debug\net6.0\Katana Tax Calculator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\obj\Debug\net6.0\Katana Tax Calculator.AssemblyInfoInputs.cache
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\obj\Debug\net6.0\Katana Tax Calculator.AssemblyInfo.cs
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\obj\Debug\net6.0\Katana Tax Calculator.csproj.CoreCompileInputs.cache
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\obj\Debug\net6.0\Katana Tax Calculator.dll
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\obj\Debug\net6.0\refint\Katana Tax Calculator.dll
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\obj\Debug\net6.0\Katana Tax Calculator.pdb
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\obj\Debug\net6.0\Katana Tax Calculator.genruntimeconfig.cache
+C:\Users\rayya\Documents\Programming\Training C#\Katana Tax Calculator\Katana Tax Calculator\obj\Debug\net6.0\ref\Katana Tax Calculator.dll

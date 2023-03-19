@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Katana Tax Calculator/1.0.0": {
+        "runtime": {
+          "Katana Tax Calculator.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Katana Tax Calculator/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
