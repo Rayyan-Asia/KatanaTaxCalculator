@@ -14,6 +14,8 @@ namespace Price_Calculator_Kata
         public int UPC { get; set; }
         public double Price { get; set; }
         public decimal Discount { get; set; } = 0;
+        public double DiscountCap { get; set; }
         public List<IExpense> Expenses { get; set; } = Factory.CreateExpenses();
+        
     }
 }
