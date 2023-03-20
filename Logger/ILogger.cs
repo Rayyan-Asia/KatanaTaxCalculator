@@ -1,6 +1,6 @@
 ﻿namespace Price_Calculator_Kata
 {
-    public interface IProductReportLogger
+    public interface ILogger
     {
         void PrintProduct(IProduct product, int precision);
         

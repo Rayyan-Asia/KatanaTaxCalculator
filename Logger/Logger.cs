@@ -2,7 +2,7 @@
 
 namespace Price_Calculator_Kata
 {
-    public class ProductReportLogger : IProductReportLogger
+    public class Logger : ILogger
     {
         public void PrintCapDeduction(double before, double after, string currency, int precision)
         {

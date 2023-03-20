@@ -70,5 +70,18 @@ namespace Price_Calculator_Kata
             }
             return total;
         }
+
+        public double CalculateExpenses(IProductPriceCalculator priceCalculator, ILogger logger, IProduct product, int precision)
+        {
+            var totalExpenses = 0.0;
+            foreach (Expense expense in product.Expenses)
+            {
+                var cost = priceCalculator.CalculateExpense(expense, product, precision);
+                logger.PrintExpense(expense.Description, cost, product.Currency, precision);
+                totalExpenses += cost;
+            }
+
+            return totalExpenses;
+        }
     }
 }

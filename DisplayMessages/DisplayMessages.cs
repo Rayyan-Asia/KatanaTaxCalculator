@@ -8,7 +8,7 @@ namespace Price_Calculator_Kata
 {
     public class DisplayMessages : IDisplayMessages
     {
-        public void DisplayWelcomeMessage()
+        public void DisplayDemandTaxRateMessage()
         {
             Console.WriteLine("Please enter the tax rate you wish to have." +
                 "\nBe sure to give a number from 0 to 100 ;)");
@@ -89,29 +89,35 @@ namespace Price_Calculator_Kata
             Console.WriteLine("Would you like the discounts to be simple sum\nEnter 'y' for yes or any other key for no for multiplicative discounts.");
         }
 
-        public void DisplayDemandsDiscountCap()
+        public void DisplayDemandsDiscountCapMessage()
         {
             Console.WriteLine("Would you like to enter discount caps?\nenter 'y' for yes and anything else as no");
         }
 
-        public void DisplayDemandUpcForDiscountCap()
+        public void DisplayDemandUpcForDiscountCapMessage()
         {
             Console.WriteLine("Please enter the UPC for a Product you would like to hava a discount cap on or enter -1 to exit loop.");
         }
 
-        public void DisplayDemandDiscountCapPercentage()
+        public void DisplayDemandDiscountCapPercentageMessage()
         {
             Console.WriteLine("Please enter a real number from 0 to 100 for the added discount cap rate");
         }
 
-        public void DisplayDemandDiscountCapAmount()
+        public void DisplayDemandDiscountCapAmountMessage()
         {
             Console.WriteLine("Please enter the maximum discount amount");
         }
 
-        public void DisplayDemandPrecisionMeasurement()
+        public void DisplayDemandPrecisionMeasurementMessage()
         {
             Console.WriteLine("Please enter the precision you desire");
+        }
+
+        public void DisplayDemandDefaultTaxRateMessage()
+        {
+            Console.WriteLine("Would you like a custom tax rate?\nenter 'y' as yes or anything else as no" +
+                "\n20 percent will be the default tax rate");
         }
     }
 }

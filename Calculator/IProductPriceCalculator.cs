@@ -10,5 +10,6 @@
         public double CalculatePriceWithGivenDiscountRateAfterTaxWithoutUPC(IProduct product, double priceAfterTax, decimal discountRate, int precision);
         public double CalculateExpense(IExpense expense, IProduct product, int precision);
         public double CalculatePriceWithMultiplicativeDiscount(IProduct product, double priceAfterTax, decimal discountRate, int precision);
+        public double CalculateExpenses(IProductPriceCalculator priceCalculator, ILogger logger, IProduct product, int precision);
     }
 }
