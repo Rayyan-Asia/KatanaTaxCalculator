@@ -9,10 +9,16 @@ namespace KatanaTaxCalculator.KatanaTaxCalculator
 {
     public class CalculatorConfigurations
     {
-        public readonly decimal DiscountRate;
-        public readonly decimal TaxRate;
-        public readonly DiscountCombinationType type;
-        public readonly string Currency;
+        public decimal DiscountRate;
+        public decimal TaxRate;
+        public DiscountCombinationType Type;
 
+        public CalculatorConfigurations(decimal discountRate, decimal taxRate,
+            DiscountCombinationType type)
+        {
+            DiscountRate = discountRate;
+            TaxRate = taxRate;
+            Type = type;
+        }
     }
 }
