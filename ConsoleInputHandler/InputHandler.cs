@@ -4,18 +4,16 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KatanaTaxCalculator.KatanaTaxCalculator;
 using Price_Calculator_Kata;
 
 namespace Katana_Tax_Calculator
 {
     public class InputHandler : IConsoleInputHandler
     {
-
-        private readonly IProductRepository _repository;
-        private readonly IDisplayMessages _messenger;
-        public InputHandler(IProductRepository repository, IDisplayMessages messenger)
+        private readonly IConsoleMessenger _messenger;
+        public InputHandler(IConsoleMessenger messenger)
         {
-            this._repository = repository;
             this._messenger = messenger;
         }
 
@@ -32,6 +30,20 @@ namespace Katana_Tax_Calculator
             }
             ExitFromInvalidInput(input);
             return true;
+        }
+
+        public string ReadCurrency()
+        {
+            var input = Console.ReadLine().ToUpper().Replace(" ",""); 
+            if (input.Length == 3)
+            {
+                return input;
+            }
+            else
+            {
+                ExitFromInvalidInput(input);
+            }
+            return "";
         }
        
         public bool UserEnteredYes()
@@ -68,41 +80,12 @@ namespace Katana_Tax_Calculator
             }
             return percentage;
         }
-
-        public int ParseInt( string input)
-        {
-            var upc = 0;
-            try { upc = int.Parse(input); }
-            catch (Exception ex)
-            {
-                _messenger.DisplayErrorMessage(input);
-                _messenger.DisplayExitMessage();
-                Environment.Exit(-1);
-            }
-
-            return upc;
-        }
-
-        public double ParseDouble( string input, int precision)
-        {
-            var amount = 0.0;
-            try { amount = Math.Round(double.Parse(input), precision); }
-            catch (Exception ex)
-            {
-                _messenger.DisplayErrorMessage(input);
-                _messenger.DisplayExitMessage();
-                Environment.Exit(-1);
-            }
-
-            return amount;
-        }
-
       
 
         public void ExitFromInvalidInput(string input)
         {
-            _messenger.DisplayErrorMessage(input);
-            _messenger.DisplayExitMessage();
+            _messenger.ErrorMessage(input);
+            _messenger.ExitMessage();
             Environment.Exit(-1);
         }
         private void ExitIfInvalid(int number, string input)

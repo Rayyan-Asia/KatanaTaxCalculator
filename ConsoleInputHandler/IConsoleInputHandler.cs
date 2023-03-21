@@ -8,8 +8,7 @@ namespace Katana_Tax_Calculator
         void ExitFromInvalidInput(string input);
         bool UserEnteredYes();
         decimal ParseDecimal();
-        double ParseDouble( string input, int precision);
-        int ParseInt( string input);
         int ParsePercentage(string input);
+        string ReadCurrency();
     }
 }

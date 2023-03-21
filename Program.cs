@@ -1,4 +1,5 @@
 ﻿using Katana_Tax_Calculator;
+using KatanaTaxCalculator.KatanaTaxCalculator;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
@@ -20,40 +21,59 @@ namespace Price_Calculator_Kata
     {
         public static void Main()
         {
-            /* Things to change
-             * additive or multipicative
-             * general discount
-             * general taxRate
-             * currency
-            */
             var messenger = Factory.CreateDisplayMessages();
             var inputHandler = Factory.CreateConsoleInputHandler();
-            decimal taxRate = GetTaxRate(messenger, inputHandler);
-            decimal discountRate = GetDiscountRate(messenger, inputHandler);
-            int precision = GetPrecision(messenger, inputHandler);
-            messenger.DisplayExitMessage();
-        }
-        private static int GetPrecision(IDisplayMessages messenger, IConsoleInputHandler inputHandler)
-        {
-            messenger.DisplayDemandPrecisionMeasurementMessage();
-            int precision = inputHandler.ParseInt(Console.ReadLine().Replace(" ", "").ToLower());
-            return precision;
+            ReadCalculatorConfigurations(messenger, inputHandler);
+
+            CalculateAndReport();
+
+            messenger.ExitMessage();
         }
 
-        private static decimal GetDiscountRate(IDisplayMessages messenger, IConsoleInputHandler inputHandler)
+        private static void ReadCalculatorConfigurations(IConsoleMessenger messenger, IConsoleInputHandler inputHandler)
         {
-            messenger.DisplayDiscountMessage();
+            decimal taxRate = ReadTaxRate(messenger, inputHandler);
+            decimal discountRate = ReadDiscountRate(messenger, inputHandler);
+            DiscountCombinationType type = IsMultiplicative(messenger, inputHandler);
+            string currency = ReadCurrency(messenger, inputHandler);
+
+        }
+
+        private static DiscountCombinationType IsMultiplicative(IConsoleMessenger messenger, IConsoleInputHandler inputHandler)
+        {
+            messenger.SumOrMultiplicativeDiscountMessage();
+            if(inputHandler.UserEnteredYes())
+            {
+                return DiscountCombinationType.Additive;
+            }
+            return DiscountCombinationType.Multiplicative;
+        }
+
+        private static void CalculateAndReport()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ReadCurrency(IConsoleMessenger messenger, IConsoleInputHandler inputHandler)
+        {
+            messenger.DemandCurrencyMessage();
+            string currency = inputHandler.ReadCurrency();
+            return currency;
+        }
+
+        private static decimal ReadDiscountRate(IConsoleMessenger messenger, IConsoleInputHandler inputHandler)
+        {
+            messenger.DemandDiscountRateMessage();
             decimal discountRate = inputHandler.ParseDecimal();
             return discountRate;
         }
-
-        private static decimal GetTaxRate(IDisplayMessages messenger, IConsoleInputHandler inputHandler)
+        private static decimal ReadTaxRate(IConsoleMessenger messenger, IConsoleInputHandler inputHandler)
         {
-            messenger.DisplayDemandDefaultTaxRateMessage();
+            messenger.DemandDefaultTaxRateMessage();
             decimal taxRate;
             if (inputHandler.UserEnteredYes())
             {
-                messenger.DisplayDemandTaxRateMessage();
+                messenger.DemandTaxRateMessage();
                 taxRate = inputHandler.ParseDecimal();
             }
             else
