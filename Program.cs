@@ -24,9 +24,7 @@ namespace Price_Calculator_Kata
             var messenger = Factory.CreateDisplayMessages();
             var inputHandler = Factory.CreateConsoleInputHandler();
             ReadCalculatorConfigurations(messenger, inputHandler);
-
             CalculateAndReport();
-
             messenger.ExitMessage();
         }
 
@@ -36,7 +34,7 @@ namespace Price_Calculator_Kata
             decimal discountRate = ReadDiscountRate(messenger, inputHandler);
             DiscountCombinationType type = IsMultiplicative(messenger, inputHandler);
             string currency = ReadCurrency(messenger, inputHandler);
-
+            
         }
 
         private static DiscountCombinationType IsMultiplicative(IConsoleMessenger messenger, IConsoleInputHandler inputHandler)
