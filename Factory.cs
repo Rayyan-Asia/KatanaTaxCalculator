@@ -12,7 +12,7 @@ namespace Price_Calculator_Kata
 {
     public class Factory
     {
-        public static IProductPriceCalculator CreatePriceCalculator() => new ProductPriceCalculator();
+        
 
         public static ILogger CreateLogger() => new Logger();
 
@@ -23,11 +23,6 @@ namespace Price_Calculator_Kata
         public static IProductRepository CreateProductRepository() => new ProductRepository();
 
         public static List<IExpense> CreateExpenses() => new List<IExpense>();
-
-        public static IExpense CreateExpense() => new Expense();
-
         public static IConsoleInputHandler CreateConsoleInputHandler() => new InputHandler(CreateProductRepository(),CreateDisplayMessages());
-
-        public static IReportGenerator CreateReportGenerator() => new ReportGenerator(CreateDisplayMessages(), CreateLogger(), CreateProductRepository(), CreatePriceCalculator());
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface IProductRepository
     {
-        IProduct GetProductByUPC(int UPC);
-        List<IProduct> ListProducts();
+        IProduct? GetProductByUPC(int UPC);
+        List<IProduct> GetAll();
     }
 }

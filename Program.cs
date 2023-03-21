@@ -20,59 +20,19 @@ namespace Price_Calculator_Kata
     {
         public static void Main()
         {
+            /* Things to change
+             * additive or multipicative
+             * general discount
+             * general taxRate
+             * currency
+            */
             var messenger = Factory.CreateDisplayMessages();
             var inputHandler = Factory.CreateConsoleInputHandler();
             decimal taxRate = GetTaxRate(messenger, inputHandler);
             decimal discountRate = GetDiscountRate(messenger, inputHandler);
             int precision = GetPrecision(messenger, inputHandler);
-            GetCustomProductDiscount(messenger, inputHandler);
-            GetProductDiscountCaps(messenger, inputHandler, precision);
-            GetProductExpenses(messenger, inputHandler, precision);
-            Report(messenger, inputHandler, taxRate, discountRate, precision);
             messenger.DisplayExitMessage();
         }
-
-        private static void Report(IDisplayMessages messenger, IConsoleInputHandler inputHandler, decimal taxRate, decimal discountRate, int precision)
-        {
-            messenger.DisplayOrderOfCalculationsMessage();
-            var reportGenerator = Factory.CreateReportGenerator();
-            if (inputHandler.DemandsDiscountBeforeTax())
-            {
-                reportGenerator.GenerateReport(taxRate, discountRate, true, precision);
-            }
-            else
-            {
-                reportGenerator.GenerateReport(taxRate, discountRate, false, precision);
-            }
-        }
-
-        private static void GetProductExpenses(IDisplayMessages messenger, IConsoleInputHandler inputHandler, int precision)
-        {
-            messenger.DisplayAddExpensesMessage();
-            if (inputHandler.IsYes())
-            {
-                inputHandler.GetCustomExpenses(precision);
-            }
-        }
-
-        private static void GetProductDiscountCaps(IDisplayMessages messenger, IConsoleInputHandler inputHandler, int precision)
-        {
-            messenger.DisplayDemandsDiscountCapMessage();
-            if (inputHandler.IsYes())
-            {
-                inputHandler.GetCustomDiscountCap(precision);
-            }
-        }
-
-        private static void GetCustomProductDiscount(IDisplayMessages messenger, IConsoleInputHandler inputHandler)
-        {
-            messenger.DisplayCustomDiscountMessage();
-            if (inputHandler.DemandsCustomDiscount())
-            {
-                inputHandler.GetCustomDiscounts();
-            }
-        }
-
         private static int GetPrecision(IDisplayMessages messenger, IConsoleInputHandler inputHandler)
         {
             messenger.DisplayDemandPrecisionMeasurementMessage();
@@ -91,7 +51,7 @@ namespace Price_Calculator_Kata
         {
             messenger.DisplayDemandDefaultTaxRateMessage();
             decimal taxRate;
-            if (inputHandler.IsYes())
+            if (inputHandler.UserEnteredYes())
             {
                 messenger.DisplayDemandTaxRateMessage();
                 taxRate = inputHandler.ParseDecimal();
@@ -102,7 +62,5 @@ namespace Price_Calculator_Kata
             }
             return taxRate;
         }
-
-
     }
 }

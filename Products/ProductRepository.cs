@@ -18,25 +18,23 @@ namespace Price_Calculator_Kata
                     Name = "XBox",
                     UPC = 123456,
                     Price = 21.50,
-                    Currency = "USD"
                 },
                 new Product()
                 {
                     Name = "PS5",
                     UPC = 654321,
                     Price = 25.00,
-                    Currency = "JOD"
                 },
             };
         }
-        public List<IProduct> ListProducts()
+        public List<IProduct> GetAll()
         {
             return _products;
         }
 
-        public IProduct GetProductByUPC(int UPC)
+        public IProduct? GetProductByUPC(int upc)
         {
-            return _products.SingleOrDefault(s => s.UPC == UPC);
+            return _products.SingleOrDefault(s => s.UPC == upc);
         }
     }
 }

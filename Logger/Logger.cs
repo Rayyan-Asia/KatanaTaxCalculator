@@ -52,7 +52,7 @@ namespace Price_Calculator_Kata
 
         public void PrintProduct(IProduct product, int precision)
         {
-            Console.Write($"{product.Name} price reported as {Math.Round(product.Price,precision)} {product.Currency}\n");
+            Console.Write($"\n\n{product.Name} price reported as {Math.Round(product.Price,precision)} \n");
         }
         public void PrintTax(double before, double after, decimal taxRate, string currency, int precision)
         {
