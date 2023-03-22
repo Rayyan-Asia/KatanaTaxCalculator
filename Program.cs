@@ -28,6 +28,7 @@ namespace Price_Calculator_Kata
             CalculateAndReport(calculator,currency);
             messenger.ExitMessage();
         }
+        
 
         private static ICalculator ReadCalculatorConfigurations(IConsoleMessenger messenger, IConsoleReader inputHandler)
         {
@@ -49,7 +50,7 @@ namespace Price_Calculator_Kata
 
         private static void CalculateAndReport(ICalculator calculator, string Currency)
         {
-            throw new NotImplementedException();
+            
         }
 
         private static string ReadCurrency(IConsoleMessenger messenger, IConsoleReader inputHandler)
