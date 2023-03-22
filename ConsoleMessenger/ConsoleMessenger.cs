@@ -1,4 +1,4 @@
-﻿using KatanaTaxCalculator.KatanaTaxCalculator;
+﻿using KatanaTaxCalculator;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Katana_Tax_Calculator
 {
-    public class DiscountService
+    public class DiscountService : IDiscountService
     {
         private readonly IDiscountRepository _repository;
 

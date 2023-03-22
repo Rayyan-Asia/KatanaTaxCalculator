@@ -2,7 +2,7 @@
 
 namespace Katana_Tax_Calculator
 {
-    public interface IConsoleInputHandler
+    public interface IConsoleReader
     {
         bool DemandsDiscountBeforeTax();
         void ExitFromInvalidInput(string input);

@@ -7,7 +7,7 @@ using Price_Calculator_Kata;
 
 namespace Katana_Tax_Calculator.Product
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         private readonly IProductRepository _repository;
 
@@ -21,7 +21,8 @@ namespace Katana_Tax_Calculator.Product
             return _repository.GetAll();
         }
 
-        public IProduct? GetProductByUpc(int upc) {
+        public IProduct? GetProductByUpc(int upc)
+        {
             return _repository.GetProductByUPC(upc);
         }
     }

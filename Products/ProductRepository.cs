@@ -17,13 +17,13 @@ namespace Price_Calculator_Kata
                 {
                     Name = "XBox",
                     UPC = 123456,
-                    Price = 21.50,
+                    Price = 21.50M,
                 },
                 new Product()
                 {
                     Name = "PS5",
                     UPC = 654321,
-                    Price = 25.00,
+                    Price = 21.50M,
                 },
             };
         }

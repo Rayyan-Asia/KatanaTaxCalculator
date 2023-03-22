@@ -9,12 +9,12 @@ namespace Price_Calculator_Kata
 {
     public class Expense : IExpense
     {
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
         public string Description { get; set; }
         public int UPC { get; set; }
         public RelativeCalculationType CalculationType { get; set; }
 
-        public Expense(double amount, string description, int uPC, RelativeCalculationType calculationType)
+        public Expense(decimal amount, string description, int uPC, RelativeCalculationType calculationType)
         {
             Amount = amount;
             Description = description;

@@ -6,18 +6,21 @@ using System.Threading.Tasks;
 
 namespace Katana_Tax_Calculator
 {
-    public class CapService
+    public class CapService : ICapService
     {
         private readonly ICapRepository _repository;
-        public CapService(ICapRepository repository) {
+        public CapService(ICapRepository repository)
+        {
             _repository = repository;
         }
 
-        public List<ICap> GetAllCaps() {
+        public List<ICap> GetAllCaps()
+        {
             return _repository.GetAll();
         }
 
-        public ICap? GetCapByUpc(int upc) {
+        public ICap? GetCapByUpc(int upc)
+        {
             return _repository.GetCapByUpc(upc);
         }
     }

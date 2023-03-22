@@ -1,5 +1,5 @@
 ﻿using Katana_Tax_Calculator;
-using KatanaTaxCalculator.KatanaTaxCalculator;
+using KatanaTaxCalculator;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
@@ -23,21 +23,21 @@ namespace Price_Calculator_Kata
         {
             var messenger = Factory.CreateDisplayMessages();
             var inputHandler = Factory.CreateConsoleInputHandler();
-            ReadCalculatorConfigurations(messenger, inputHandler);
-            CalculateAndReport();
+            var calculator = ReadCalculatorConfigurations(messenger, inputHandler);
+            string currency = ReadCurrency(messenger, inputHandler);
+            CalculateAndReport(calculator,currency);
             messenger.ExitMessage();
         }
 
-        private static void ReadCalculatorConfigurations(IConsoleMessenger messenger, IConsoleInputHandler inputHandler)
+        private static ICalculator ReadCalculatorConfigurations(IConsoleMessenger messenger, IConsoleReader inputHandler)
         {
             decimal taxRate = ReadTaxRate(messenger, inputHandler);
             decimal discountRate = ReadDiscountRate(messenger, inputHandler);
             DiscountCombinationType type = IsMultiplicative(messenger, inputHandler);
-            string currency = ReadCurrency(messenger, inputHandler);
-            
+            return Factory.CreateCalculator(taxRate, discountRate, type);
         }
 
-        private static DiscountCombinationType IsMultiplicative(IConsoleMessenger messenger, IConsoleInputHandler inputHandler)
+        private static DiscountCombinationType IsMultiplicative(IConsoleMessenger messenger, IConsoleReader inputHandler)
         {
             messenger.SumOrMultiplicativeDiscountMessage();
             if(inputHandler.UserEnteredYes())
@@ -47,25 +47,25 @@ namespace Price_Calculator_Kata
             return DiscountCombinationType.Multiplicative;
         }
 
-        private static void CalculateAndReport()
+        private static void CalculateAndReport(ICalculator calculator, string Currency)
         {
             throw new NotImplementedException();
         }
 
-        private static string ReadCurrency(IConsoleMessenger messenger, IConsoleInputHandler inputHandler)
+        private static string ReadCurrency(IConsoleMessenger messenger, IConsoleReader inputHandler)
         {
             messenger.DemandCurrencyMessage();
             string currency = inputHandler.ReadCurrency();
             return currency;
         }
 
-        private static decimal ReadDiscountRate(IConsoleMessenger messenger, IConsoleInputHandler inputHandler)
+        private static decimal ReadDiscountRate(IConsoleMessenger messenger, IConsoleReader inputHandler)
         {
             messenger.DemandDiscountRateMessage();
             decimal discountRate = inputHandler.ParseDecimal();
             return discountRate;
         }
-        private static decimal ReadTaxRate(IConsoleMessenger messenger, IConsoleInputHandler inputHandler)
+        private static decimal ReadTaxRate(IConsoleMessenger messenger, IConsoleReader inputHandler)
         {
             messenger.DemandDefaultTaxRateMessage();
             decimal taxRate;

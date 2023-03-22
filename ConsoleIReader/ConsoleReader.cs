@@ -4,15 +4,15 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KatanaTaxCalculator.KatanaTaxCalculator;
+using KatanaTaxCalculator;
 using Price_Calculator_Kata;
 
 namespace Katana_Tax_Calculator
 {
-    public class InputHandler : IConsoleInputHandler
+    public class ConsoleReader : IConsoleReader
     {
         private readonly IConsoleMessenger _messenger;
-        public InputHandler(IConsoleMessenger messenger)
+        public ConsoleReader(IConsoleMessenger messenger)
         {
             this._messenger = messenger;
         }

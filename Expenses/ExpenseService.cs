@@ -7,7 +7,7 @@ using Price_Calculator_Kata;
 
 namespace Katana_Tax_Calculator
 {
-    public class ExpenseService
+    public class ExpenseService : IExpenseService
     {
         private readonly IExpenseRepository _repository;
         public ExpenseService(IExpenseRepository repository)
