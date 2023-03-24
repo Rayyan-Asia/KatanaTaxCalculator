@@ -5,6 +5,6 @@ namespace Katana_Tax_Calculator
     public interface IExpenseService
     {
         List<IExpense> GetAll();
-        IExpense? GetExpenseByUpc(int upc);
+        List<IExpense> GetExpensesByUpc(int upc);
     }
 }

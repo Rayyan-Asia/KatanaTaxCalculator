@@ -16,10 +16,10 @@ namespace Price_Calculator_Kata
     {
         public static IProduct CreateProduct() => new Product();
         public static IConsoleMessenger CreateDisplayMessages() => new ConsoleMessenger();
-        public static IProductRepository CreateProductRepository() => new ProductRepository();
-        public static IDiscountRepository CreateDiscountRepository() => new DiscountRepository();
-        public static ICapRepository CreateCapRepository() => new CapRepository();
-        public static IExpenseRepository CreateExpenseRepository() => new ExpenseRepository();
+        private static IProductRepository CreateProductRepository() => new ProductRepository();
+        private static IDiscountRepository CreateDiscountRepository() => new DiscountRepository();
+        private static ICapRepository CreateCapRepository() => new CapRepository();
+        private static IExpenseRepository CreateExpenseRepository() => new ExpenseRepository();
         public static IProductService CreateProductService() => new ProductService(CreateProductRepository());
         public static IDiscountService CreateDiscountService() => new DiscountService(CreateDiscountRepository());
         public static ICapService CreateCapService() => new CapService(CreateCapRepository());
@@ -29,7 +29,11 @@ namespace Price_Calculator_Kata
         {
             return new Calculator(taxRate, discountRate,  CreateDiscountService(), type,2);
         }
+        public static IPrinter CreatePrinter(ICalculator calculator, string currency)
+            => new Printer(calculator, CreateExpenseService(), CreateCapService(), currency);
 
-       
+
+
+
     }
 }

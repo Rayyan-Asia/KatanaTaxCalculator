@@ -50,7 +50,12 @@ namespace Price_Calculator_Kata
 
         private static void CalculateAndReport(ICalculator calculator, string Currency)
         {
-            
+            var printer = Factory.CreatePrinter(calculator, Currency);
+            var products = Factory.CreateProductService().GetAll();
+            foreach (var product in products)
+            {
+                printer.PrintPriceCalculations(product);
+            }
         }
 
         private static string ReadCurrency(IConsoleMessenger messenger, IConsoleReader inputHandler)

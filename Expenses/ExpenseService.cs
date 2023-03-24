@@ -20,9 +20,9 @@ namespace Katana_Tax_Calculator
             return _repository.GetAll();
         }
 
-        public IExpense? GetExpenseByUpc(int upc)
+        public List<IExpense> GetExpensesByUpc(int upc)
         {
-            return _repository.GetExpenseByUpc(upc);
+            return _repository.GetExpensesByUpc(upc);
         }
     }
 }

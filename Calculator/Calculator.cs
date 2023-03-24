@@ -15,7 +15,7 @@ namespace KatanaTaxCalculator
         private readonly IDiscountService _discountService;
         public DiscountCombinationType type { get; set; }
 
-        public int _precision { get; set; }
+        public int Precision { get; set; }
 
         public Calculator(decimal taxRate, decimal discountRate, IDiscountService discountService, DiscountCombinationType type, int precision)
         {
@@ -23,24 +23,24 @@ namespace KatanaTaxCalculator
             DiscountRate = discountRate;
             this._discountService = discountService;
             this.type = type;
-            _precision = precision;
+            Precision = precision;
         }
 
         public decimal CalculateTaxAmount(IProduct product)
         {
             if (IsDiscountBefore(product))
             {
-                return ((product.Price - CalculateProductDiscount(product)) * TaxRate).Round(_precision);
+                return ((product.Price - CalculateProductDiscount(product)) * TaxRate).Round(Precision);
             }
             else
             {
-                return (product.Price * TaxRate).Round(_precision);
+                return (product.Price * TaxRate).Round(Precision);
             }
         }
 
         public decimal CalculateUniversalDiscount(decimal price)
         {
-            return (price * DiscountRate).Round(_precision);
+            return (price * DiscountRate).Round(Precision);
         }
 
         public decimal CalculateProductDiscount(IProduct product)
@@ -50,7 +50,7 @@ namespace KatanaTaxCalculator
             {
                 var discountPercentage = discount.Percentage;
                 if (discountPercentage != 0)
-                    return (product.Price * discountPercentage).Round(_precision);
+                    return (product.Price * discountPercentage).Round(Precision);
             }
             return 0;
         }
@@ -64,7 +64,7 @@ namespace KatanaTaxCalculator
 
         public decimal CalculteSimpleSumDiscount(IProduct product)
         {
-            return (CalculateProductDiscount(product) + CalculateUniversalDiscount(product.Price)).Round(_precision);
+            return (CalculateProductDiscount(product) + CalculateUniversalDiscount(product.Price)).Round(Precision);
         }
 
         public decimal CalculateMultiplicativeDiscount(IProduct product)
@@ -73,7 +73,7 @@ namespace KatanaTaxCalculator
             return CalculateUniversalDiscount(product.Price - firstDiscount);
         }
 
-        public decimal CalculateTotalDiscountAmount(IProduct product, Cap? cap)
+        public decimal CalculateTotalDiscountAmount(IProduct product, ICap? cap)
         {
             decimal totalDiscount;
             if (type == DiscountCombinationType.Additive)
@@ -90,20 +90,20 @@ namespace KatanaTaxCalculator
             return totalDiscount;
         }
 
-        public decimal CalculateCap(IProduct product, Cap cap)
+        public decimal CalculateCap(IProduct product, ICap cap)
         {
             if (cap.CalculationType == RelativeCalculationType.Amount)
-                return cap.Value.Round(_precision);
-            return (cap.Value * product.Price).Round(_precision);
+                return cap.Value.Round(Precision);
+            return (cap.Value * product.Price).Round(Precision);
         }
 
         public decimal CalculateExpense(IProduct product, IExpense expense)
         {
-            return (product.Price * expense.Amount).Round(_precision);
+            return (product.Price * (expense.Amount/100)).Round(Precision);
         }
-        public decimal CalculateTotalPrice(IProduct product, decimal ExpenseSum, Cap? cap)
+        public decimal CalculateTotalPrice(IProduct product, decimal ExpenseSum, ICap? cap)
         {
-            return (product.Price + CalculateTaxAmount(product) - CalculateTotalDiscountAmount(product, cap) + ExpenseSum.Round(_precision)).Round(_precision);
+            return (product.Price + CalculateTaxAmount(product) - CalculateTotalDiscountAmount(product, cap) + ExpenseSum.Round(Precision)).Round(Precision);
         }
 
     }

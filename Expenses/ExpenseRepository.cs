@@ -21,9 +21,9 @@ namespace Katana_Tax_Calculator
         }
 
         public List<IExpense> GetAll() { return _expenses; }
-        public IExpense? GetExpenseByUpc(int upc)
+        public List<IExpense> GetExpensesByUpc(int upc)
         {
-            return _expenses.SingleOrDefault(s => s.UPC == upc);
+            return (from expense in _expenses where expense.UPC == upc select expense).ToList();
         }
     }
 }
