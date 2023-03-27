@@ -24,7 +24,6 @@ namespace Price_Calculator_Kata
         public static IDiscountService CreateDiscountService() => new DiscountService(CreateDiscountRepository());
         public static ICapService CreateCapService() => new CapService(CreateCapRepository());
         public static IExpenseService CreateExpenseService() => new ExpenseService(CreateExpenseRepository());
-        public static IConsoleReader CreateConsoleInputHandler() => new ConsoleReader(CreateDisplayMessages());
         public static ICalculator CreateCalculator(decimal taxRate, decimal discountRate, DiscountCombinationType type)
         {
             return new Calculator(taxRate, discountRate,  CreateDiscountService(), type,2);
