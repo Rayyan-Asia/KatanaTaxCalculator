@@ -3,6 +3,8 @@
     public interface IDiscountService
     {
         List<IDiscount> GetAll();
-        IDiscount? GetDiscountByUpc(int upc);
+        List<IDiscount> GetDiscountsByUpc(int upc);
+        decimal CalculateDiscountPrecedence(int upc, decimal price, DiscountCombinationType type);
+        decimal CalculateTotalProductDiscount(int upc, decimal price, DiscountCombinationType type);
     }
 }

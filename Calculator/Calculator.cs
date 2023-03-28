@@ -3,6 +3,7 @@ using Price_Calculator_Kata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,32 +11,29 @@ namespace KatanaTaxCalculator
 {
     public class Calculator : ICalculator
     {
-        public decimal TaxRate { get; set; }
-        public decimal DiscountRate { get; set; }
+        private readonly decimal DiscountRate = .10m;
+        private readonly decimal TaxRate = .20m;
+        private readonly int Precision = 2;
+        private readonly DiscountCombinationType type = DiscountCombinationType.Multiplicative;
         private readonly IDiscountService _discountService;
-        public DiscountCombinationType type { get; set; }
+        private readonly ICapService _capService;
+        private readonly IProductService _productService;
+        private readonly IExpenseService _expenseService;
 
-        public int Precision { get; set; }
-
-        public Calculator(decimal taxRate, decimal discountRate, IDiscountService discountService, DiscountCombinationType type, int precision)
+        public Calculator(IDiscountService discountService, ICapService capService, IProductService productService, IExpenseService expenseService)
         {
-            TaxRate = taxRate;
-            DiscountRate = discountRate;
-            this._discountService = discountService;
-            this.type = type;
-            Precision = precision;
+            _discountService = discountService;
+            _capService = capService;
+            _productService = productService;
+            _expenseService = expenseService;
         }
 
         public decimal CalculateTaxAmount(IProduct product)
         {
-            if (IsDiscountBefore(product))
-            {
-                return ((product.Price - CalculateProductDiscount(product)) * TaxRate).Round(Precision);
-            }
-            else
-            {
-                return (product.Price * TaxRate).Round(Precision);
-            }
+
+            return ((product.Price - _discountService.CalculateDiscountPrecedence(product.UPC, product.Price, type))
+            * TaxRate).Round(Precision);
+
         }
 
         public decimal CalculateUniversalDiscount(decimal price)
@@ -43,68 +41,49 @@ namespace KatanaTaxCalculator
             return (price * DiscountRate).Round(Precision);
         }
 
-        public decimal CalculateProductDiscount(IProduct product)
+        public decimal CalculateTotalDiscountAmount(IProduct product)
         {
-            var discount = _discountService.GetDiscountByUpc(product.UPC);
-            if (discount != null)
-            {
-                var discountPercentage = discount.Percentage;
-                if (discountPercentage != 0)
-                    return (product.Price * discountPercentage).Round(Precision);
-            }
-            return 0;
-        }
-        public bool IsDiscountBefore(IProduct product)
-        {
-            var discount = _discountService.GetDiscountByUpc(product.UPC);
-            if (discount != null && discount.type == DiscountOrderType.BeforeTax)
-                return true;
-            return false;
-        }
-
-        public decimal CalculteSimpleSumDiscount(IProduct product)
-        {
-            return (CalculateProductDiscount(product) + CalculateUniversalDiscount(product.Price)).Round(Precision);
-        }
-
-        public decimal CalculateMultiplicativeDiscount(IProduct product)
-        {
-            decimal firstDiscount = CalculateProductDiscount(product);
-            return CalculateUniversalDiscount(product.Price - firstDiscount);
-        }
-
-        public decimal CalculateTotalDiscountAmount(IProduct product, ICap? cap)
-        {
+            decimal productDiscount = _discountService.CalculateTotalProductDiscount(product.UPC, product.Price, type).Round(Precision);
             decimal totalDiscount;
-            if (type == DiscountCombinationType.Additive)
-                totalDiscount = CalculteSimpleSumDiscount(product);
-            else
-                totalDiscount = CalculateMultiplicativeDiscount(product);
-
-            if (cap != null)
+            if (type == DiscountCombinationType.Multiplicative)
             {
-                decimal capAmount = CalculateCap(product, cap);
+                totalDiscount = productDiscount + ((product.Price - productDiscount) * DiscountRate);
+            }
+            else
+            {
+                totalDiscount = productDiscount + (product.Price * DiscountRate);
+            }
+            if (_capService.ProductHasCap(product.UPC))
+            {
+                decimal capAmount = _capService.CalculateCap(product.Price, product.UPC).Round(Precision)
+                    .Round(Precision);
                 if (totalDiscount > capAmount)
                     return capAmount;
             }
-            return totalDiscount;
+            return totalDiscount.Round(Precision);
+        }
+        public ICalculationResults CalculateAndSaveResults(int upc)
+        {
+            var product = _productService.GetProductByUpc(upc);
+            List<IExpense> calculatedExpenses = new List<IExpense>();
+            var expenseSum = _expenseService.CalculateExpensesAndExport(upc, product.Price, calculatedExpenses).Round(Precision)
+                .Round(Precision);
+            return CreateResults(product, calculatedExpenses, expenseSum);
+        }
+        private ICalculationResults CreateResults(IProduct? product, List<IExpense> calculatedExpenses, decimal expenseSum)
+        {
+            ICalculationResults results = Factory.CreateCalculationResults();
+            results.BasePrice = product.Price.Round(Precision);
+            results.Name = product.Name;
+            calculatedExpenses.ForEach(s => s.Amount = s.Amount.Round(Precision));
+            results.CalculatedExpenses = calculatedExpenses;
+            results.DiscountAmount = CalculateTotalDiscountAmount(product);
+            results.TaxAmount = CalculateTaxAmount(product);
+            results.FinalPrice = (product.Price + results.TaxAmount - results.DiscountAmount + expenseSum).Round(Precision);
+            return results;
         }
 
-        public decimal CalculateCap(IProduct product, ICap cap)
-        {
-            if (cap.CalculationType == RelativeCalculationType.Amount)
-                return cap.Value.Round(Precision);
-            return (cap.Value * product.Price).Round(Precision);
-        }
 
-        public decimal CalculateExpense(IProduct product, IExpense expense)
-        {
-            return (product.Price * (expense.Amount/100)).Round(Precision);
-        }
-        public decimal CalculateTotalPrice(IProduct product, decimal ExpenseSum, ICap? cap)
-        {
-            return (product.Price + CalculateTaxAmount(product) - CalculateTotalDiscountAmount(product, cap) + ExpenseSum.Round(Precision)).Round(Precision);
-        }
 
     }
 }

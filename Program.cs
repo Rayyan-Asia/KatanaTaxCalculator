@@ -39,8 +39,18 @@ namespace Price_Calculator_Kata
                     try
                     {
                         int upc = int.Parse(input);
-                        string text = File.ReadAllText("../../../Settings.json");
-                        var json = JsonSerializer.Deserialize<JsonArray>(text);
+                        var productService = Factory.CreateProductService();
+                        var calculator = Factory.CreateCalculator();
+                        var printer = Factory.CreatePrinter();
+                        if (productService.DoesProductExist(upc))
+                        {
+                            var results = calculator.CalculateAndSaveResults(upc);
+                            printer.PrintPriceCalculations(results);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Product not found!! Please try again.");
+                        }
                     }
                     catch
                     {

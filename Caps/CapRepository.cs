@@ -27,5 +27,10 @@ namespace Katana_Tax_Calculator
         {
             return _caps.SingleOrDefault(s => s.UPC == upc);
         }
+
+        public bool ProductHasCap(int upc)
+        {
+           return _caps.Any(s=>s.UPC==upc);
+        }
     }
 }

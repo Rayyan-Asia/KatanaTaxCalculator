@@ -14,6 +14,10 @@ namespace Price_Calculator_Kata
         public int UPC { get; set; }
         public RelativeCalculationType CalculationType { get; set; }
 
+        public Expense()
+        {
+
+        }
         public Expense(decimal amount, string description, int uPC, RelativeCalculationType calculationType)
         {
             Amount = amount;

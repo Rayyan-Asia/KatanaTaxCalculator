@@ -6,5 +6,6 @@ namespace Katana_Tax_Calculator
     {
         List<IExpense> GetAll();
         List<IExpense> GetExpensesByUpc(int upc);
+        decimal CalculateExpensesAndExport(int upc, decimal price, List<IExpense> expenses); 
     }
 }

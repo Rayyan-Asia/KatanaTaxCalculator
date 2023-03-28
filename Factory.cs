@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Katana_Tax_Calculator;
-using Katana_Tax_Calculator.Product;
 using KatanaTaxCalculator;
 using Price_Calculator_Kata;
 
@@ -15,6 +14,9 @@ namespace Price_Calculator_Kata
     public static class Factory
     {
         public static IProduct CreateProduct() => new Product();
+        public static IExpense CreateExpense(decimal value, string desc, int upc, RelativeCalculationType type) 
+            => new Expense(value,desc,upc,type);
+        public static ICalculationResults CreateCalculationResults() => new CalculationResults();
         public static IConsoleMessenger CreateDisplayMessages() => new ConsoleMessenger();
         private static IProductRepository CreateProductRepository() => new ProductRepository();
         private static IDiscountRepository CreateDiscountRepository() => new DiscountRepository();
@@ -24,12 +26,12 @@ namespace Price_Calculator_Kata
         public static IDiscountService CreateDiscountService() => new DiscountService(CreateDiscountRepository());
         public static ICapService CreateCapService() => new CapService(CreateCapRepository());
         public static IExpenseService CreateExpenseService() => new ExpenseService(CreateExpenseRepository());
-        public static ICalculator CreateCalculator(decimal taxRate, decimal discountRate, DiscountCombinationType type)
+        public static ICalculator CreateCalculator()
         {
-            return new Calculator(taxRate, discountRate,  CreateDiscountService(), type,2);
+            return new Calculator(CreateDiscountService(),CreateCapService(),CreateProductService(),CreateExpenseService());
         }
-        public static IPrinter CreatePrinter(ICalculator calculator, string currency)
-            => new Printer(calculator, CreateExpenseService(), CreateCapService(), currency);
+        public static IPrinter CreatePrinter()
+            => new Printer();
 
 
 

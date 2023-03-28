@@ -27,6 +27,12 @@ namespace Price_Calculator_Kata
                 },
             };
         }
+
+        public bool DoesProductExist(int upc)
+        {
+            return _products.Any(s => s.UPC == upc);
+        }
+
         public List<IProduct> GetAll()
         {
             return _products;

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Price_Calculator_Kata;
 
-namespace Katana_Tax_Calculator.Product
+namespace Katana_Tax_Calculator
 {
     public class ProductService : IProductService
     {
@@ -14,6 +14,11 @@ namespace Katana_Tax_Calculator.Product
         public ProductService(IProductRepository repository)
         {
             this._repository = repository;
+        }
+
+        public bool DoesProductExist(int upc)
+        {
+            return _repository.DoesProductExist(upc);
         }
 
         public List<IProduct> GetAll()

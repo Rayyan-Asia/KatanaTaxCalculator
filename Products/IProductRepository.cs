@@ -4,5 +4,6 @@
     {
         IProduct? GetProductByUPC(int UPC);
         List<IProduct> GetAll();
+        bool DoesProductExist(int upc);
     }
 }

@@ -23,9 +23,9 @@ namespace Katana_Tax_Calculator
             return _discounts;
         }
 
-        public IDiscount? GetDiscountByUpc(int upc)
+        public List<IDiscount> GetDiscountsByUpc(int upc)
         {
-            return _discounts.SingleOrDefault(s => s.UPC == upc);
+            return _discounts.Where(s => s.UPC == upc).ToList();
         }
     }
 }

@@ -4,5 +4,6 @@
     {
         List<ICap> GetAll();
         ICap? GetCapByUpc(int upc);
+        bool ProductHasCap(int upc);
     }
 }
