@@ -13,7 +13,10 @@ namespace Katana_Tax_Calculator
         {
             _discounts = new List<IDiscount>()
             {
-                new Discount(.10M,123456,DiscountOrderType.AfterTax),
+                new Discount(.02M,123456,DiscountOrderType.AfterTax),
+                new Discount(.02M,123456,DiscountOrderType.BeforeTax),
+                new Discount(.02M,123456,DiscountOrderType.AfterTax),
+                new Discount(.02M,123456,DiscountOrderType.BeforeTax),
                 new Discount(.10M,654321,DiscountOrderType.BeforeTax)
             };
         }
